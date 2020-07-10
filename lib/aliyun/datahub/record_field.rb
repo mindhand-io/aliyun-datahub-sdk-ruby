@@ -6,12 +6,16 @@ module Aliyun
     class RecordField
       attr_reader :name, :type
 
+      ALLOWED_TYPES = %w[STRING BIGINT DOUBLE TIMESTAMP BOOLEAN DECIMAL].freeze
       def initialize(name, type)
         @name = name
+
+        raise ArgumentError, 'Invalid RecordField Type' unless ALLOWED_TYPES.include?(type)
+
         @type = type
       end
 
-      def to_json(options = {mode: :compat})
+      def to_json(options = {})
         field_map = {}
         field_map['name'] = @name
         field_map['type'] = @type
